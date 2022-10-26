@@ -1,0 +1,16 @@
+{
+  "name": "simple-dapp",
+  "version": "0.1.0",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "build": "wsrun -s -c build",
+    "test": "wsrun -s -c test"
+  },
+  "workspaces": [
+    "packages/**"
+  ],
+  "devDependencies": {
+    "wsrun": "^5.2.4"
+  }
+}
