@@ -1,10 +1,9 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 
 import Typography from '@mui/material/Typography';
 
-import { WETH10, WETH10ABI } from '@simple-dapp/contracts';
-import { Contract, utils } from 'ethers';
-import { useCall, useEthers } from '@usedapp/core';
+import { utils } from 'ethers';
+import { useEthers } from '@usedapp/core';
 import TableContainer from '@mui/material/TableContainer';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
@@ -13,7 +12,6 @@ import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import TableBody from '@mui/material/TableBody';
 import Box from '@mui/material/Box';
-import { weth10Addresses } from '../shared/weth10addresses';
 
 const secondAddress = '0x0000000000000000000000000000000000000000';
 
@@ -48,16 +46,8 @@ interface BalancesTableRowProps {
 }
 
 const BalancesTableRow = ({ address }: BalancesTableRowProps) => {
-  const { chainId } = useEthers();
-  const weth10Contract = useMemo(() => {
-    return chainId && new Contract(weth10Addresses[chainId], WETH10ABI.abi) as WETH10;
-  }, [chainId]);
-
-  const balance = useCall(address && weth10Contract && {
-    contract: weth10Contract,
-    method: 'balanceOf',
-    args: [address],
-  });
+  // TODO: get weth balance for address
+  const balance: any = undefined;
 
   return (
     <TableRow>

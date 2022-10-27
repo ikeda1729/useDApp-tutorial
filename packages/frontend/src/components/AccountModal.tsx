@@ -21,12 +21,11 @@ interface AccountModalProps {
 }
 
 export const AccountModal = ({ open, onClose } : AccountModalProps) => {
-  const { account, deactivate } = useEthers();
-  const balance = useEtherBalance(account);
   const [copied, setCopied] = useState(false);
 
   const copyAddress = () => {
-    navigator.clipboard.writeText(account || '');
+    // TODO: Copy address of the current user to clipboard
+    navigator.clipboard.writeText('');
     if (!copied) {
       setCopied(true);
       setTimeout(() => setCopied(false), 5000);
@@ -34,11 +33,12 @@ export const AccountModal = ({ open, onClose } : AccountModalProps) => {
   };
 
   const onDisconnect = () => {
-    deactivate();
+    // TODO: Disconnect from wallet
     onClose();
   };
 
-  if (!account) {
+  // TODO: The Dialog should should be displayed only if the user is connected
+  if (true) {
     return null;
   }
 
@@ -63,10 +63,14 @@ export const AccountModal = ({ open, onClose } : AccountModalProps) => {
       <DialogContent>
         <Grid container spacing={2}>
           <Grid item xs={12}>
-            <Typography variant='h6' align='center'> {shortenAddress(account)} </Typography>
+            <Typography variant='h6' align='center'>
+              {/* TODO: Display shortened version of connected user */}
+            </Typography>
           </Grid>
           <Grid item xs={12}>
-            <Typography variant='body2' align='center'> {balance ? utils.formatEther(balance) : 0} ETH </Typography>
+            <Typography variant='body2' align='center'>
+              {/* TODO: Display balance of the current user */}
+            </Typography>
           </Grid>
           <Grid item xs={6} justifyContent='center' display='flex'>
             <Button

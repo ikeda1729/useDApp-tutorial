@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 
-import { shortenAddress, useEthers } from "@usedapp/core";
 import { Button } from "@mui/material";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { AccountModal } from "./AccountModal";
 
 export const AccountButton = () => {
-  const { account, activateBrowserWallet } = useEthers();
   const [modalOpen, setModalOpen] = useState(false);
 
   const onModalOpen = () => {
@@ -14,17 +12,18 @@ export const AccountButton = () => {
   };
 
   const onConnect = () => {
-    activateBrowserWallet();
+    // TODO: Connect to wallet
   };
 
-  if (account) {
+  // TODO: Display this comeponent only if the user is connected
+  if (false) {
     return (
       <>
         <Button 
           onClick={onModalOpen}
           color='inherit'
         >
-          {shortenAddress(account)}
+          {/* TODO: Display shortened version of connected user */}
           <KeyboardArrowDownIcon />
         </Button>
         <AccountModal open={modalOpen} onClose={() => setModalOpen(false)} />

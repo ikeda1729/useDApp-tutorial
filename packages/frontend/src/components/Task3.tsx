@@ -1,10 +1,6 @@
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 
 import Typography from '@mui/material/Typography';
-import { WETH10ABI, WETH10 } from '@simple-dapp/contracts';
-import { useContractFunction, useEthers } from '@usedapp/core';
-import { Contract, utils } from 'ethers';
-import { weth10Addresses } from '../shared/weth10addresses';
 import Paper from '@mui/material/Paper';
 import { Button, Grid, TextField, InputAdornment } from '@mui/material';
 
@@ -23,17 +19,10 @@ export const Task3 = () => {
 };
 
 const DepositComponent = () => {
-  const { chainId } = useEthers();
-  const weth10Contract = useMemo(() => {
-    return chainId && new Contract(weth10Addresses[chainId], WETH10ABI.abi) as WETH10;
-  }, [chainId]);
   const [value, setValue] = useState('');
 
-  const { send, state } = useContractFunction(weth10Contract, 'deposit');
-
   const handleDeposit = () => {
-    send({ value: utils.parseEther(value) });
-    setValue('');
+    // TODO: deposit `value` ETH to WETH10 contract
   };
 
   return (
@@ -58,7 +47,7 @@ const DepositComponent = () => {
           <Button
             onClick={handleDeposit}
             variant="contained"
-            disabled={state.status === 'Mining' || state.status === 'PendingSignature'}
+            disabled={false} // Disable button if transaction is in progress
           >
             Deposit 
           </Button>
@@ -67,7 +56,7 @@ const DepositComponent = () => {
           <TextField
             id="outlined-read-only-input"
             label="Transaction status"
-            value={state.status}
+            value={''} // TODO: show transaction status
             InputProps={{
               readOnly: true,
             }}
@@ -79,17 +68,10 @@ const DepositComponent = () => {
 }
 
 const WithdrawComponent = () => {
-  const { chainId } = useEthers();
-  const weth10Contract = useMemo(() => {
-    return chainId && new Contract(weth10Addresses[chainId], WETH10ABI.abi) as WETH10;
-  }, [chainId]);
   const [value, setValue] = useState('');
 
-  const { send, state } = useContractFunction(weth10Contract, 'withdraw');
-
   const handleWithdraw = () => {
-    send(utils.parseEther(value));
-    setValue('');
+    // TODO: withdraw `value` WETH from WETH10 contract
   };
 
   return (
@@ -115,7 +97,7 @@ const WithdrawComponent = () => {
           <Button
             onClick={handleWithdraw}
             variant="contained"
-            disabled={state.status === 'Mining' || state.status === 'PendingSignature'}
+            disabled={false} // Disable button if transaction is in progress
           >
             Withdraw 
           </Button>
@@ -124,7 +106,7 @@ const WithdrawComponent = () => {
           <TextField
             id="outlined-read-only-input"
             label="Transaction status"
-            value={state.status}
+            value={''} // TODO: show transaction status
             InputProps={{
               readOnly: true,
             }}
@@ -136,19 +118,11 @@ const WithdrawComponent = () => {
 }
 
 const TransferComponent = () => {
-  const { chainId } = useEthers();
-  const weth10Contract = useMemo(() => {
-    return chainId && new Contract(weth10Addresses[chainId], WETH10ABI.abi) as WETH10;
-  }, [chainId]);
   const [value, setValue] = useState('');
   const [address, setAddress] = useState('');
 
-  const { send, state } = useContractFunction(weth10Contract, 'transfer');
-
   const handleTransfer = () => {
-    send(address, utils.parseEther(value));
-    setValue('');
-    setAddress('');
+    // TODO: transfer `value` WETH to `address`
   };
 
   return (
@@ -183,7 +157,7 @@ const TransferComponent = () => {
           <Button
             onClick={handleTransfer}
             variant="contained"
-            disabled={state.status === 'Mining' || state.status === 'PendingSignature'}
+            disabled={false} // Disable button if transaction is in progress
           >
             Transfer 
           </Button>
@@ -192,7 +166,7 @@ const TransferComponent = () => {
           <TextField
             id="outlined-read-only-input"
             label="Transaction status"
-            value={state.status}
+            value={''} // TODO: show transaction status
             InputProps={{
               readOnly: true,
             }}
