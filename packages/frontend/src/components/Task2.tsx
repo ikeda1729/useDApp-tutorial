@@ -2,7 +2,6 @@ import React from 'react';
 
 import Typography from '@mui/material/Typography';
 
-import { utils } from 'ethers';
 import { useEthers } from '@usedapp/core';
 import TableContainer from '@mui/material/TableContainer';
 import Paper from '@mui/material/Paper';
@@ -47,19 +46,18 @@ interface BalancesTableRowProps {
 
 const BalancesTableRow = ({ address }: BalancesTableRowProps) => {
   // TODO: get weth balance for address
-  const balance: any = undefined;
 
   return (
     <TableRow>
       <TableCell>{address}</TableCell>
       <TableCell align="right">
-        {balance
+        {undefined // TODO: if request is completed
         ?
-        balance.error 
+        false // TODO: if there is an error
           ?
           <Box sx={{ color: 'error.main' }}> Error fetching balance </Box>
           :
-          utils.formatEther(balance.value[0])
+          '0 ETH' // TODO: show properly formated balance balance
         : 'Loading...'}
       </TableCell>
     </TableRow>
