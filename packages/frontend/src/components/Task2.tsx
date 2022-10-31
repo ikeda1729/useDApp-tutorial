@@ -2,7 +2,6 @@ import React from 'react';
 
 import Typography from '@mui/material/Typography';
 
-import { useEthers } from '@usedapp/core';
 import TableContainer from '@mui/material/TableContainer';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
@@ -15,8 +14,6 @@ import Box from '@mui/material/Box';
 const secondAddress = '0x0000000000000000000000000000000000000000';
 
 export const Task2 = () => {
-  const { account } = useEthers();
-
   return (
     <>
       <Typography variant="h6" align='center'>
@@ -31,7 +28,7 @@ export const Task2 = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            <BalancesTableRow address={account}/>
+            <BalancesTableRow address={secondAddress}/>
             <BalancesTableRow address={secondAddress}/>
           </TableBody>
         </Table>

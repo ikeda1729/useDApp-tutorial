@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-import { shortenAddress, useEtherBalance, useEthers } from '@usedapp/core';
-
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
@@ -13,7 +11,6 @@ import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import CheckIcon from '@mui/icons-material/Check';
-import { utils } from 'ethers';
 
 interface AccountModalProps {
   open: boolean;
@@ -25,7 +22,7 @@ export const AccountModal = ({ open, onClose } : AccountModalProps) => {
 
   const copyAddress = () => {
     // TODO: Copy address of the current user to clipboard
-    navigator.clipboard.writeText('');
+  
     if (!copied) {
       setCopied(true);
       setTimeout(() => setCopied(false), 5000);

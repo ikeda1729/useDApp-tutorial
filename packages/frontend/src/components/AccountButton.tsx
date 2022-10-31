@@ -15,7 +15,7 @@ export const AccountButton = () => {
     // TODO: Connect to wallet
   };
 
-  // TODO: Display this comeponent only if the user is connected
+  // TODO: Display this component only if the user is connected
   if (false) {
     return (
       <>
