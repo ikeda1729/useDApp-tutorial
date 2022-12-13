@@ -6,9 +6,9 @@ import Container from '@mui/material/Container';
 
 import { NavBar } from './components/NavBar';
 import { Tabs } from './components/Tabs';
-import { Task1 } from './components/Task1';
-import { Task2 } from './components/Task2';
-import { Task3 } from './components/Task3';
+import { Exercise1 } from './components/Exercise1';
+import { Exercise2 } from './components/Exercise2';
+import { Exercise3 } from './components/Exercise3';
 
 function App() {
   return (
@@ -17,10 +17,10 @@ function App() {
       <Container>
         <Tabs />
         <Routes>
-          <Route path="/task1" element={<Task1 />} />
-          <Route path="/task2" element={<Task2 />} />
-          <Route path="/task3" element={<Task3 />} />
-          <Route path="/" element={<Navigate to="/task1" />} />
+          <Route path="/exercise1" element={<Exercise1 />} />
+          <Route path="/exercise2" element={<Exercise2 />} />
+          <Route path="/exercise3" element={<Exercise3 />} />
+          <Route path="/" element={<Navigate to="/exercise1" />} />
         </Routes>
       </Container>
     </BrowserRouter>

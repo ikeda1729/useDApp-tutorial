@@ -23,14 +23,14 @@ function useRouteMatch(patterns: readonly string[]) {
 }
 
 export const Tabs = () => {
-  const routeMatch = useRouteMatch(['/task1', '/task2', '/task3']);
+  const routeMatch = useRouteMatch(['/exercise1', '/exercise2', '/exercise3']);
   const currentTab = routeMatch?.pattern?.path;
 
   return (
     <MuiTabs value={currentTab}>
-      <Tab label="Task 1" value="/task1" to="/task1" component={Link} />
-      <Tab label="Task 2" value="/task2" to="/task2" component={Link} />
-      <Tab label="Task 3" value="/task3" to="/task3" component={Link} />
+      <Tab label="Exercise 1" value="/exercise1" to="/exercise1" component={Link} />
+      <Tab label="Exercise 2" value="/exercise2" to="/exercise2" component={Link} />
+      <Tab label="Exercise 3" value="/exercise3" to="/exercise3" component={Link} />
     </MuiTabs>
   );
 }
