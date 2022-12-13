@@ -13,11 +13,11 @@ import Box from '@mui/material/Box';
 
 const secondAddress = '0x0000000000000000000000000000000000000000';
 
-export const Task2 = () => {
+export const Exercise2 = () => {
   return (
     <>
       <Typography variant="h6" align='center'>
-        Task 2
+        Exercise 2
       </Typography>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">

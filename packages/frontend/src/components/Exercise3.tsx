@@ -4,12 +4,12 @@ import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import { Button, Grid, TextField, InputAdornment } from '@mui/material';
 
-export const Task3 = () => {
+export const Exercise3 = () => {
 
   return (
     <>
       <Typography variant="h6" align='center'>
-        Task 3
+        Exercise 3
       </Typography>
       <DepositComponent />
       <WithdrawComponent />
