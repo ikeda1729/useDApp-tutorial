@@ -11,18 +11,24 @@ import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import CheckIcon from '@mui/icons-material/Check';
+import { shortenAddress, useEtherBalance, useEthers } from '@usedapp/core';
+import { utils } from 'ethers';
 
 interface AccountModalProps {
   open: boolean;
   onClose: () => void;
 }
 
-export const AccountModal = ({ open, onClose } : AccountModalProps) => {
+export const AccountModal = ({ open, onClose }: AccountModalProps) => {
   const [copied, setCopied] = useState(false);
+  const { account, deactivate } = useEthers();
+  const balance = useEtherBalance(account);
 
   const copyAddress = () => {
-    // TODO: Copy address of the current user to clipboard
-  
+    if (account) {
+      navigator.clipboard.writeText(account);
+    }
+
     if (!copied) {
       setCopied(true);
       setTimeout(() => setCopied(false), 5000);
@@ -30,12 +36,12 @@ export const AccountModal = ({ open, onClose } : AccountModalProps) => {
   };
 
   const onDisconnect = () => {
-    // TODO: Disconnect from wallet
+    deactivate();
     onClose();
   };
 
   // TODO: The Dialog should should be displayed only if the user is connected
-  if (true) {
+  if (!account) {
     return null;
   }
 
@@ -61,40 +67,40 @@ export const AccountModal = ({ open, onClose } : AccountModalProps) => {
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <Typography variant='h6' align='center'>
-              {/* TODO: Display shortened version of connected user */}
+              {shortenAddress(account)}
             </Typography>
           </Grid>
           <Grid item xs={12}>
             <Typography variant='body2' align='center'>
-              {/* TODO: Display balance of the current user */}
+              {balance ? utils.formatEther(balance) : 0} ETH
             </Typography>
           </Grid>
           <Grid item xs={6} justifyContent='center' display='flex'>
             <Button
               fullWidth
               onClick={copyAddress}
-              style={{textTransform: 'none', display: 'block'}}>
+              style={{ textTransform: 'none', display: 'block' }}>
               {!copied ?
-              <>
-                <ContentCopyIcon/>
-                <br />
-                Copy Address
-              </>
-              :
-              <>
-                <CheckIcon/>
-                <br />
-                Copied!
-              </>}
+                <>
+                  <ContentCopyIcon />
+                  <br />
+                  Copy Address
+                </>
+                :
+                <>
+                  <CheckIcon />
+                  <br />
+                  Copied!
+                </>}
             </Button>
           </Grid>
           <Grid item xs={6} justifyContent='center' display='flex'>
             <Button
               fullWidth
               onClick={onDisconnect}
-              style={{textTransform: 'none', display: 'block'}}>
+              style={{ textTransform: 'none', display: 'block' }}>
               <LogoutIcon />
-                <br />
+              <br />
               Disconnect
             </Button>
           </Grid>

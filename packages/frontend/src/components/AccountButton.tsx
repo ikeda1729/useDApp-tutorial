@@ -4,26 +4,29 @@ import { Button } from "@mui/material";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { AccountModal } from "./AccountModal";
 
+import { shortenAddress, useEthers } from '@usedapp/core';
+
 export const AccountButton = () => {
   const [modalOpen, setModalOpen] = useState(false);
+  const { account, activateBrowserWallet } = useEthers();
 
   const onModalOpen = () => {
     setModalOpen(true);
   };
 
   const onConnect = () => {
-    // TODO: Connect to wallet
+    activateBrowserWallet();
   };
 
   // TODO: Display this component only if the user is connected
-  if (false) {
+  if (account) {
     return (
       <>
-        <Button 
+        <Button
           onClick={onModalOpen}
           color='inherit'
         >
-          {/* TODO: Display shortened version of connected user */}
+          {shortenAddress(account)}
           <KeyboardArrowDownIcon />
         </Button>
         <AccountModal open={modalOpen} onClose={() => setModalOpen(false)} />
@@ -32,11 +35,11 @@ export const AccountButton = () => {
   }
 
   return (
-    <Button 
+    <Button
       onClick={onConnect}
       color='inherit'
     >
-        Connect Wallet
+      Connect Wallet
     </Button>
   );
 };

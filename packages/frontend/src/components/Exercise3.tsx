@@ -3,6 +3,10 @@ import React, { useState } from 'react';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import { Button, Grid, TextField, InputAdornment } from '@mui/material';
+import { useContractFunction, useEthers } from '@usedapp/core';
+import { WETH10ABI, WETH10 } from '@simple-dapp/contracts';
+import { Contract, utils } from 'ethers';
+import { weth10Addresses } from '../shared/weth10addresses';
 
 export const Exercise3 = () => {
 
@@ -20,9 +24,14 @@ export const Exercise3 = () => {
 
 const DepositComponent = () => {
   const [value, setValue] = useState('');
+  const { chainId } = useEthers();
+  const weth10Address = chainId && weth10Addresses[chainId] || "";
+  const weth10Contract = new Contract(weth10Address, WETH10ABI.abi) as WETH10;
+  const { send, state } = useContractFunction(weth10Contract, 'deposit');
 
   const handleDeposit = () => {
-    // TODO: deposit `value` ETH to WETH10 contract
+    send({ value: utils.parseEther(value) });
+    setValue('');
   };
 
   return (
@@ -31,32 +40,32 @@ const DepositComponent = () => {
       <Grid container spacing={2} marginTop={2}>
         <Grid item xs={4} justifyContent='center' display='flex'>
           <TextField
-              id="standard-number"
-              label="Value"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              InputProps={{
-                endAdornment: <InputAdornment position="end">ETH</InputAdornment>
-              }}
-              variant="outlined"
-              onChange={(e) => { setValue(e.target.value) }}
-            />
+            id="standard-number"
+            label="Value"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            InputProps={{
+              endAdornment: <InputAdornment position="end">ETH</InputAdornment>
+            }}
+            variant="outlined"
+            onChange={(e) => { setValue(e.target.value) }}
+          />
         </Grid>
         <Grid item xs={4} justifyContent='center' display='flex'>
           <Button
             onClick={handleDeposit}
             variant="contained"
-            disabled={false} // Disable button if transaction is in progress
+            disabled={state.status === 'Mining' || state.status === 'PendingSignature'}
           >
-            Deposit 
+            Deposit
           </Button>
         </Grid>
         <Grid item xs={4} justifyContent='center' display='flex'>
           <TextField
             id="outlined-read-only-input"
             label="Transaction status"
-            value={''} // TODO: show transaction status
+            value={state.status}
             InputProps={{
               readOnly: true,
             }}
@@ -69,9 +78,15 @@ const DepositComponent = () => {
 
 const WithdrawComponent = () => {
   const [value, setValue] = useState('');
+  const { chainId } = useEthers();
+  const weth10Address = chainId && weth10Addresses[chainId] || "";
+  const weth10Contract = new Contract(weth10Address, WETH10ABI.abi) as WETH10;
+  const { send, state } = useContractFunction(weth10Contract, 'withdraw');
 
   const handleWithdraw = () => {
     // TODO: withdraw `value` WETH from WETH10 contract
+    send(utils.parseEther(value))
+    setValue('');
   };
 
   return (
@@ -80,33 +95,33 @@ const WithdrawComponent = () => {
       <Grid container spacing={2} marginTop={2}>
         <Grid item xs={4} justifyContent='center' display='flex'>
           <TextField
-              id="standard-number"
-              label="Value"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              value={value}
-              InputProps={{
-                endAdornment: <InputAdornment position="end">WETH</InputAdornment>
-              }}
-              variant="outlined"
-              onChange={(e) => { setValue(e.target.value) }}
-            />
+            id="standard-number"
+            label="Value"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            value={value}
+            InputProps={{
+              endAdornment: <InputAdornment position="end">WETH</InputAdornment>
+            }}
+            variant="outlined"
+            onChange={(e) => { setValue(e.target.value) }}
+          />
         </Grid>
         <Grid item xs={4} justifyContent='center' display='flex'>
           <Button
             onClick={handleWithdraw}
             variant="contained"
-            disabled={false} // Disable button if transaction is in progress
+            disabled={state.status === 'Mining' || state.status === 'PendingSignature'}
           >
-            Withdraw 
+            Withdraw
           </Button>
         </Grid>
         <Grid item xs={4} justifyContent='center' display='flex'>
           <TextField
             id="outlined-read-only-input"
             label="Transaction status"
-            value={''} // TODO: show transaction status
+            value={state.status}
             InputProps={{
               readOnly: true,
             }}
@@ -120,9 +135,16 @@ const WithdrawComponent = () => {
 const TransferComponent = () => {
   const [value, setValue] = useState('');
   const [address, setAddress] = useState('');
+  const { chainId } = useEthers();
+  const weth10Address = chainId && weth10Addresses[chainId] || "";
+  const weth10Contract = new Contract(weth10Address, WETH10ABI.abi) as WETH10;
+  const { send, state } = useContractFunction(weth10Contract, 'transfer');
 
   const handleTransfer = () => {
     // TODO: transfer `value` WETH to `address`
+    send(address, utils.parseEther(value));
+    setValue('');
+    setAddress('');
   };
 
   return (
@@ -131,42 +153,42 @@ const TransferComponent = () => {
       <Grid container spacing={2} marginTop={2}>
         <Grid item xs={5} justifyContent='center' display='flex'>
           <TextField
-              label="To"
-              fullWidth
-              InputLabelProps={{
-                shrink: true,
-              }}
-              variant="outlined"
-              onChange={(e) => { setAddress(e.target.value) }}
-            />
+            label="To"
+            fullWidth
+            InputLabelProps={{
+              shrink: true,
+            }}
+            variant="outlined"
+            onChange={(e) => { setAddress(e.target.value) }}
+          />
         </Grid>
         <Grid item xs={3} justifyContent='center' display='flex'>
           <TextField
-              label="Value"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              InputProps={{
-                endAdornment: <InputAdornment position="end">WETH</InputAdornment>
-              }}
-              variant="outlined"
-              onChange={(e) => { setValue(e.target.value) }}
-            />
+            label="Value"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            InputProps={{
+              endAdornment: <InputAdornment position="end">WETH</InputAdornment>
+            }}
+            variant="outlined"
+            onChange={(e) => { setValue(e.target.value) }}
+          />
         </Grid>
         <Grid item xs={2} justifyContent='center' display='flex'>
           <Button
             onClick={handleTransfer}
             variant="contained"
-            disabled={false} // Disable button if transaction is in progress
+            disabled={state.status === 'Mining' || state.status === 'PendingSignature'}
           >
-            Transfer 
+            Transfer
           </Button>
         </Grid>
         <Grid item xs={2} justifyContent='center' display='flex'>
           <TextField
             id="outlined-read-only-input"
             label="Transaction status"
-            value={''} // TODO: show transaction status
+            value={state.status} // TODO: show transaction status
             InputProps={{
               readOnly: true,
             }}

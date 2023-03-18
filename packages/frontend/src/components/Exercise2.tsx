@@ -10,10 +10,15 @@ import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import TableBody from '@mui/material/TableBody';
 import Box from '@mui/material/Box';
+import { useCall, useEthers } from '@usedapp/core';
+import { weth10Addresses } from '../shared/weth10addresses';
+import { WETH10ABI, WETH10 } from '@simple-dapp/contracts';
+import { Contract, utils } from 'ethers';
 
 const secondAddress = '0x0000000000000000000000000000000000000000';
 
 export const Exercise2 = () => {
+  const { account } = useEthers();
   return (
     <>
       <Typography variant="h6" align='center'>
@@ -28,8 +33,8 @@ export const Exercise2 = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            <BalancesTableRow address={secondAddress}/>
-            <BalancesTableRow address={secondAddress}/>
+            <BalancesTableRow address={account} />
+            <BalancesTableRow address={secondAddress} />
           </TableBody>
         </Table>
       </TableContainer>
@@ -43,19 +48,26 @@ interface BalancesTableRowProps {
 
 const BalancesTableRow = ({ address }: BalancesTableRowProps) => {
   // TODO: get weth balance for address
+  const { chainId } = useEthers();
+  const weth10Contract = chainId && new Contract(weth10Addresses[chainId], WETH10ABI.abi) as WETH10;
+  const balance = useCall(address && weth10Contract && {
+    contract: weth10Contract,
+    method: 'balanceOf',
+    args: [address],
+  });
 
   return (
     <TableRow>
       <TableCell>{address}</TableCell>
       <TableCell align="right">
-        {undefined // TODO: if request is completed
-        ?
-        false // TODO: if there is an error
+        {balance // TODO: if request is completed
           ?
-          <Box sx={{ color: 'error.main' }}> Error fetching balance </Box>
-          :
-          '0 ETH' // TODO: show properly formated balance balance
-        : 'Loading...'}
+          balance.error // TODO: if there is an error
+            ?
+            <Box sx={{ color: 'error.main' }}> Error fetching balance </Box>
+            :
+            utils.formatEther(balance.value[0])
+          : 'Loading...'}
       </TableCell>
     </TableRow>
   );
